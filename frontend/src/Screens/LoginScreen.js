@@ -23,7 +23,7 @@ const LoginScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if(email !="" && password !=""){
+    if(email !=="" && password !==""){
 
         dispatch(Login(email, password));
         navigate("/"); 

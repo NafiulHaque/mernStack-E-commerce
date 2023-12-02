@@ -17,7 +17,7 @@ export default function Procarousel() {
         dispatch(listTopProduct())
     },[dispatch])
 
-    return loading ? <Loader></Loader> : error ? <Message variant="danger">{error}</Message>
+    return loading ? <Loader/> : error ? <Message variant="danger">{error}</Message>
     :(
         <Carousel pause='hover' className='bg-dark'>
              { products.map(product =>(

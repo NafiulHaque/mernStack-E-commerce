@@ -30,7 +30,7 @@ console.log("name:", name);
   const submitHandler = (e) => {
 
     e.preventDefault();
-    if(email !="" && password !="" && name !="" && confirmPassword !=""){
+    if(email !=="" && password !=="" && name !=="" && confirmPassword !==""){
         if(password != confirmPassword){
             setMessage("password do not match")
         }else{
