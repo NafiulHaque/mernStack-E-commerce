@@ -29,34 +29,25 @@ const ProductScreen = () => {
   const { userInfo } = userLogin;
 
   const productReviewCreate = useSelector((state) => state.productCreateReview);
-  const { success: successProductReview, error: errorProductReview } =productReviewCreate;
-
+  const { success: successProductReview, error: errorProductReview } =
+    productReviewCreate;
 
   useEffect(() => {
-
-    if(successProductReview){
-
-      alert('Review Created')
-      setRating(0)
-      setComment('')
-      dispatch({type:PRODUCT_CREATE_REVIEW_RESET})
-
+    if (successProductReview) {
+      alert("Review Created");
+      setRating(0);
+      setComment("");
+      dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
 
     dispatch(ProductDetails(id));
-
-  }, [id, dispatch,successProductReview]);
-
+  }, [id, dispatch, successProductReview]);
 
   const addToCartHandler = () => {
-
     navigate(`/cart/?id=${id}&qty=${qty}`);
-
   };
 
-
   const submitHandler = (e) => {
-
     e.preventDefault();
 
     dispatch(
@@ -64,11 +55,8 @@ const ProductScreen = () => {
         rating,
         comment,
       })
-
     );
-
   };
-
 
   return (
     <>
@@ -81,7 +69,7 @@ const ProductScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-        <Meta title={product.name}/>
+          <Meta title={product.name} />
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
@@ -151,7 +139,7 @@ const ProductScreen = () => {
                   <ListGroup.Item>
                     <Button
                       onClick={addToCartHandler}
-                      className="btn-block"
+                      className="btn mt-2 btn-outline-dark text-white"
                       type="button"
                       disabled={product.countInStock === 0}
                     >
@@ -211,7 +199,11 @@ const ProductScreen = () => {
                           onChange={(e) => setComment(e.target.value)}
                         ></Form.Control>
                       </Form.Group>
-                      <Button type="submit" variant="primary">
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        className="btn mt-2 btn-outline-dark text-white hover:bg-white hover:text-black border-s-black-200"
+                      >
                         Submit
                       </Button>
                     </Form>
