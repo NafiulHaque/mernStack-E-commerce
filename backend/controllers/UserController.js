@@ -35,10 +35,10 @@ const authUsers = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id)
+      token: generateToken(user._id),
     });
   } else {
-    res.status(401)
+    res.status(401);
     throw new Error("Invalid email or password");
   }
 });
@@ -48,76 +48,74 @@ const authUsers = asyncHandler(async (req, res) => {
 // @access public
 
 const registerUser = asyncHandler(async (req, res) => {
-    const { name,email, password } = req.body;
-    const userExist = await Users.findOne({ email });
-    if(userExist){
-        res.status(401)
-        throw new Error('user already exist')
-    }
-    const user=await Users.create({
-        name,email,password
-    })
-  if(user){
-    res.status(201).json({
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        token: generateToken(user._id)
-    })
-  }else{
-    res.status(400)
-    throw new Error('user not found')
+  const { name, email, password } = req.body;
+  const userExist = await Users.findOne({ email });
+  if (userExist) {
+    res.status(401);
+    throw new Error("user already exist");
   }
-   
+  const user = await Users.create({
+    name,
+    email,
+    password,
   });
+  if (user) {
+    res.status(201).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error("user not found");
+  }
+});
 
-  // @des update user profile
+// @des update user profile
 // @route PUT /api/users/profile
 // @access private
 
-  const updateUserProfile = asyncHandler(async (req, res) => {
-    const { name,email, password } = req.body;
-    const userExist = await Users.findOne({ email });
-    if(userExist){
-      userExist.name=req.body.name || userExist.name 
-      userExist.email=req.body.email || userExist.email
-      if(req.body.password){
-        userExist.password=req.body.password
-
-      }
-    const updatedUser=await userExist.save()
- 
-    res.status(201).json({
-        id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-        token: generateToken(updatedUser._id)
-    })}
-else{
-    res.status(400)
-    throw new Error('user not found')
-  }
-   
-  });
-
-  const getUsers = asyncHandler(async (req, res) => { 
-    const users = await Users.find({});
-    res.json(users);
-  });
-
-
-  const deleteUser = asyncHandler(async (req, res) => {
-    const user = await Users.findById(req.params.id);
-    if (user) {
-      await user.remove();
-      res.json({ message: "User removed" });
-    } else {
-      res.status(404);
-      throw new Error("User not found");
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+  const userExist = await Users.findOne({ email });
+  if (userExist) {
+    userExist.name = req.body.name || userExist.name;
+    userExist.email = req.body.email || userExist.email;
+    if (req.body.password) {
+      userExist.password = req.body.password;
     }
-  });
+    const updatedUser = await userExist.save();
+
+    res.status(201).json({
+      id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error("user not found");
+  }
+});
+
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await Users.find({});
+  res.json(users);
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await Users.findById(req.params.id);
+  if (user) {
+    await user.remove();
+    res.json({ message: "User removed" });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 
 //@desc get user by id
 // @route GET /api/users/:id
@@ -158,9 +156,13 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
-
-
-export { authUsers, getUserProfile, registerUser,updateUserProfile,getUsers,deleteUser,getUserById,updateUser };
+export {
+  authUsers,
+  getUserProfile,
+  registerUser,
+  updateUserProfile,
+  getUsers,
+  deleteUser,
+  getUserById,
+  updateUser,
+};
