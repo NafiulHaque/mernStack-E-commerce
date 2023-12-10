@@ -22,6 +22,7 @@ import {
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
 } from "../Constants/ProductConstant";
+import { server } from "../server";
 
 export const listProduct =
   (keyword = " ") =>
