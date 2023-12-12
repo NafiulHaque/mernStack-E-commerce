@@ -5,8 +5,8 @@
   "description": "ecom project",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon ./server",
-    "server": "nodemon ./server",
+    "start": "nodemon ./server.js",
+    "server": "nodemon ./server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "nodemon backend/seeder",

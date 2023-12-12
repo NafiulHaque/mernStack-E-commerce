@@ -1,46 +1,48 @@
-import {React,useState} from 'react'
-import { Form, Button, Col,Row } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { Input, Button } from "@material-tailwind/react";
+import { React, useState } from "react";
+import { Form, Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const SearchBox = () => {
+  const [keyword, setKeyword] = useState("");
 
-    const [keyword, setKeyword] = useState('')
+  const navigate = useNavigate();
 
-    const navigate= useNavigate()
-
-    const submitHandler = (e) => {
-        e.preventDefault()
-        if(keyword.trim()){
-            navigate(`/search/${keyword}`)
-        }else{
-           navigate('/')
-        }}
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (keyword.trim()) {
+      navigate(`/search/${keyword}`);
+    } else {
+      navigate("/");
+    }
+  };
   return (
-    <div>
-        <Form onSubmit={submitHandler} inline>
-          <Row>
-            <Col>
-             <Form.Control
+    <>
+      <form onSubmit={submitHandler} className="lg:mr-auto">
+        <div className="relative flex w-full gap-2 md:w-max">
+          <Input
+            type="search"
+            color="white"
+            label="Search Products..."
+            // className="pr-20"
+            onChange={(e) => setKeyword(e.target.value)}
+            containerProps={{
+              className: "min-w-[288px]",
+            }}
+          />
 
-                type='text'
-                name='q'
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder='Search Products...'
-                className='mr-sm-2 ml-sm-5 rounded-md'
-            ></Form.Control>
-            </Col>
-            <Col>
-            <Button type='submit' variant='outline-success' className='p-2 rounded-md'>
-                Search
-            </Button>
-            </Col>
-            </Row>
-        </Form>
+          <Button
+            size="sm"
+            type="submit"
+            color="white"
+            className="!absolute right-1 top-1 rounded"
+          >
+            Search
+          </Button>
+        </div>
+      </form>
+    </>
+  );
+};
 
-
-    </div>
-  )
-  }
-
-
-export default SearchBox
+export default SearchBox;
