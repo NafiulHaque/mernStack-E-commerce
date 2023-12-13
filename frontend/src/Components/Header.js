@@ -55,7 +55,7 @@ const Header = () => {
 
             <SearchBox />
             {userInfo && userInfo.isAdmin && (
-              <Link to="/admin/productList">
+              <Link to="/dashboard">
                 <Button
                   className="mx-2"
                   color="white"

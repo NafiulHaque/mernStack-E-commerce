@@ -45,7 +45,7 @@ useEffect(() => {
 
   return (
     <>
-      <Link to="/userList" className="btn btn-light my-3">
+      <Link to="/dashboard/userlist" className="btn btn-light my-3">
         Go Back
       </Link>
       <FormContainer>

@@ -17,34 +17,40 @@ import UserEditScreen from "./Screens/UserEditScreen";
 import ProductListScreen from "./Screens/ProductListScreen";
 import ProductEditScreen from "./Screens/ProductEditScreen";
 import OrderListScreen from "./Screens/OrderListScreen";
+import DashboardScreen from "./Screens/DashboardScreen";
+import Dashboard from "./Components/Dashboard";
 
 function App() {
   return (
     <Router>
       <Header />
       <main className="my-2">
+        <Routes>
+          <Route path="/dashboard/" Component={DashboardScreen}>
+            <Route index element={<Dashboard/>}/>
+            <Route path="productlist" element={<ProductListScreen />}/>
+            <Route path="userlist" Component={UserListScreen} />
+            <Route path="user/:id/edit" element={<UserEditScreen />} />
+
+            <Route path="product/:id/edit" element={<ProductEditScreen />} />
+            <Route path="orderlist" element={<OrderListScreen />} />
+          </Route>
+        </Routes>
         <Container>
           <Routes>
             <Route path="/" element={<HeaderScreens />} exact />
+
             <Route path="/signup" element={<RegisterScreen />} />
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/profile" element={<ProfileScreen />} />
-            <Route path="/userList" element={<UserListScreen />} />
-            <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
-            <Route path="/admin/productlist" element={<ProductListScreen />} />
-            <Route
-              path="/admin/product/:id/edit"
-              element={<ProductEditScreen />}
-            />
-            <Route path="/admin/orderlist" element={<OrderListScreen/>} />
+
             <Route path="/shipping" element={<ShipingScreen />} />
             <Route path="/payment" element={<PaymentScreen />} />
             <Route path="/placeOrder" element={<PlaceOrderScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="/orders/:id" element={<OrderScreen />} />
-            <Route path="/search/:keyword" element={<HeaderScreens/> } />
+            <Route path="/search/:keyword" element={<HeaderScreens />} />
             <Route path="/cart" element={<CartScreen />} />
-           
           </Routes>
         </Container>
       </main>

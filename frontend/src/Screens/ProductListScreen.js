@@ -47,7 +47,7 @@ const ProductListScreen = () => {
     }
 
     if (successCreate) {
-      navigate(`/admin/product/${createdProduct._id}/edit`);
+      navigate(`/dashboard/product/${createdProduct._id}/edit`);
     } else {
       dispatch(listProduct());
     }
@@ -112,7 +112,7 @@ const ProductListScreen = () => {
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
-                    <Link to={`/admin/product/${product._id}/edit`}>
+                    <Link to={`/dashboard/product/${product._id}/edit`}>
                       <Button variant="light" className="btn-sm">
                         <i className="fas fa-edit"></i>
                       </Button>
