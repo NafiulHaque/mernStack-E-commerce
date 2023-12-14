@@ -61,10 +61,13 @@ const ProductListScreen = () => {
     }
   };
 
-  const createProductHandler = () => {
-    dispatch(productCreateAction());
-  };
+  // const createProductHandler = () => {
+  //   dispatch(productCreateAction());
+  // };
 
+  const createProductHandler =()=>{
+    navigate("/dashboard/product/create")
+  }
 
   return (
     <>

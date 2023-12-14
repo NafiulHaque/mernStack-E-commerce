@@ -14,7 +14,7 @@ const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-console.log("name:", name);
+  console.log("name:", name);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,21 +28,21 @@ console.log("name:", name);
   // }, []);
 
   const submitHandler = (e) => {
-
     e.preventDefault();
-    if(email !=="" && password !=="" && name !=="" && confirmPassword !==""){
-        if(password != confirmPassword){
-            setMessage("password do not match")
-        }else{
-               dispatch(RegisterAction(name,email, password));
-               navigate("/");
-    }
+    if (
+      email !== "" &&
+      password !== "" &&
+      name !== "" &&
+      confirmPassword !== ""
+    ) {
+      if (password !== confirmPassword) {
+        setMessage("password do not match");
+      } else {
+        dispatch(RegisterAction(name, email, password));
+        navigate("/");
       }
-
-  
+    }
   };
-
-  
 
   return (
     <FormContainer>
@@ -51,10 +51,6 @@ console.log("name:", name);
       {error && <Message variant={"danger"}>{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
-
-    
-
-
         <Form.Group>
           <Form.Label>Name</Form.Label>
           <Form.Control
@@ -98,7 +94,7 @@ console.log("name:", name);
             placeholder="Enter Confirm password"
             value={confirmPassword}
             onChange={(e) => {
-                setConfirmPassword(e.target.value);
+              setConfirmPassword(e.target.value);
             }}
           ></Form.Control>
         </Form.Group>

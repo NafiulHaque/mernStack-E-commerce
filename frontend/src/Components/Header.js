@@ -70,7 +70,8 @@ const Header = () => {
               <IoCartOutline className="text-4xl mr-2" />
             </Link>
 
-            <Menu open={open} handler={handleOpen} placement="bottom-end">
+            {userInfo?(
+              <Menu open={open} handler={handleOpen} placement="bottom-end">
               <MenuHandler>
                 <Button
                   value="text"
@@ -93,6 +94,7 @@ const Header = () => {
                 </Button>
               </MenuHandler>
               <MenuList className="p-1">
+                <h5 className="mx-2 mt-2">{userInfo.name}</h5>
                 <Link to="/profile" className="font-sm no-underline">
                   <MenuItem>Profile</MenuItem>
                 </Link>
@@ -103,6 +105,18 @@ const Header = () => {
                 <MenuItem onClick={logoutHandler}>Logout</MenuItem>
               </MenuList>
             </Menu>
+            ):(
+              <Link to="/login">
+              <Button
+                className="mx-2"
+                color="white"
+                variant="outlined"
+                size="sm"
+              >
+                Login
+              </Button>
+            </Link>
+            )}
           </div>
         </Container>
       </Navbar>

@@ -1,11 +1,11 @@
+import { Spinner } from '@material-tailwind/react';
 import React from 'react'
-import Spinner from 'react-bootstrap/Spinner';
+// import Spinner from 'react-bootstrap/Spinner';
 
 const Loader = () => {
   return (
-    <Spinner animation="border" role="status">
-    <span className="visually-hidden">Loading...</span>
-  </Spinner>
+    <Spinner className="h-16 w-16 text-gray-900/50" />
+    
   )
 }
 

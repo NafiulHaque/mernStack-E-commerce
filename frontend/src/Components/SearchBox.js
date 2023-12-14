@@ -24,10 +24,13 @@ const SearchBox = () => {
             type="search"
             color="white"
             label="Search Products..."
-            // className="pr-20"
+            className="pr-20 focus:border-t-0 z-10"
             onChange={(e) => setKeyword(e.target.value)}
             containerProps={{
               className: "min-w-[288px]",
+            }}
+            labelProps={{
+              className: " after:content-none",
             }}
           />
 
@@ -35,7 +38,7 @@ const SearchBox = () => {
             size="sm"
             type="submit"
             color="white"
-            className="!absolute right-1 top-1 rounded"
+            className="!absolute right-1 top-1 rounded z-0"
           >
             Search
           </Button>
