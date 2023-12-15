@@ -50,17 +50,29 @@ const deleteProduct = asyncHandler(async (req, res) => {
 //@route POST /api/products
 //@access private/admin
 const createProduct = asyncHandler(async (req, res) => {
-  const product = new Product({
-    name: "sample name",
-    price: 0,
-    user: req.user._id,
-    image: "https://res.cloudinary.com/dackyi7oq/image/upload/v1701951661/Screenshot_2023-12-07_182023_hsolw0.png",
-    brand: "sample brand",
-    category: "sample category",
-    countInStock: 0,
-    numReviews: 0,
-    description: "sample description",
-  });
+  const { name, price, image, brand, category, countInStock, description } =
+  req.body;
+  const product =new Product({
+    user:req.user._id,
+    name,
+    price,
+    image,
+    brand,
+    category,
+    countInStock,
+    description,
+  })
+  // const product = new Product({
+  //   name: "sample name",
+  //   price: 0,
+  //   user: req.user._id,
+  //   image: "https://res.cloudinary.com/dackyi7oq/image/upload/v1701951661/Screenshot_2023-12-07_182023_hsolw0.png",
+  //   brand: "sample brand",
+  //   category: "sample category",
+  //   countInStock: 0,
+  //   numReviews: 0,
+  //   description: "sample description",
+  // });
   const createdProduct = await product.save();
   res.status(201).json(createdProduct);
 });
