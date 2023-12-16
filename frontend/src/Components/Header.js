@@ -15,6 +15,7 @@ import {
   Navbar,
   Typography,
   Input,
+  Badge,
 } from "@material-tailwind/react";
 import { RxChevronDown, rxcart, RxDashboard } from "react-icons/rx";
 import { IoCartOutline } from "react-icons/io5";
@@ -33,6 +34,20 @@ const Header = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const cart = useSelector((state) => state.cart);
+
+  const { cartItems } = cart;
+  let sum = 0;
+  const qtys=cartItems
+    .map((e) => e.qty);
+    
+    
+    qtys.forEach((v) => {
+      sum += v;
+    })
+
+  console.log("sum",sum)
 
   const logoutHandler = () => {
     dispatch(userLogout());
@@ -66,56 +81,62 @@ const Header = () => {
                 </Button>
               </Link>
             )}
-            <Link to="/cart" className="text-white">
-              <IoCartOutline className="text-4xl mr-2" />
-            </Link>
-
-            {userInfo?(
-              <Menu open={open} handler={handleOpen} placement="bottom-end">
-              <MenuHandler>
-                <Button
-                  value="text"
-                  color="gray"
-                  className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 "
-                >
-                  <Avatar
-                    variant="circular"
-                    size="sm"
-                    alt="avatar"
-                    className="border-2 border-gray-900 p-0.5"
-                    src="https://res.cloudinary.com/dackyi7oq/image/upload/v1702312352/avatars/avatar_osrdwm.png"
-                  />
-                  <RxChevronDown
-                    strokeWidth={2.5}
-                    className={`h-3 w-3 transition-transform ${
-                      open ? "rotate-180" : ""
-                    }`}
-                  />
-                </Button>
-              </MenuHandler>
-              <MenuList className="p-1">
-                <h5 className="mx-2 mt-2">{userInfo.name}</h5>
-                <Link to="/profile" className="font-sm no-underline">
-                  <MenuItem>Profile</MenuItem>
-                </Link>
-                <Link to="/profile" className="font-sm no-underline">
-                  <MenuItem>Edit Profile</MenuItem>
-                </Link>
-
-                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-              </MenuList>
-            </Menu>
-            ):(
-              <Link to="/login">
-              <Button
-                className="mx-2"
-                color="white"
-                variant="outlined"
-                size="sm"
+            <Link to="/cart" className="text-white mr-2">
+              <Badge
+                content={sum}
+                color="blue-gray"
+                withBorder
               >
-                Login
-              </Button>
+                <IoCartOutline className="text-4xl mr-2" />
+              </Badge>
             </Link>
+
+            {userInfo ? (
+              <Menu open={open} handler={handleOpen} placement="bottom-end">
+                <MenuHandler>
+                  <Button
+                    value="text"
+                    color="gray"
+                    className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 "
+                  >
+                    <Avatar
+                      variant="circular"
+                      size="sm"
+                      alt="avatar"
+                      className="border-2 border-gray-900 p-0.5"
+                      src="https://res.cloudinary.com/dackyi7oq/image/upload/v1702312352/avatars/avatar_osrdwm.png"
+                    />
+                    <RxChevronDown
+                      strokeWidth={2.5}
+                      className={`h-3 w-3 transition-transform ${
+                        open ? "rotate-180" : ""
+                      }`}
+                    />
+                  </Button>
+                </MenuHandler>
+                <MenuList className="p-1">
+                  <h5 className="mx-2 mt-2">{userInfo.name}</h5>
+                  <Link to="/profile" className="font-sm no-underline">
+                    <MenuItem>Profile</MenuItem>
+                  </Link>
+                  <Link to="/profile" className="font-sm no-underline">
+                    <MenuItem>Edit Profile</MenuItem>
+                  </Link>
+
+                  <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <Link to="/login">
+                <Button
+                  className="mx-2"
+                  color="white"
+                  variant="outlined"
+                  size="sm"
+                >
+                  Login
+                </Button>
+              </Link>
             )}
           </div>
         </Container>

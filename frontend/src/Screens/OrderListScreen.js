@@ -56,6 +56,7 @@ const OrderListScreen = () => {
                         <td>
                             {order.isPaid ? (
                                 order.paidAt.substring(0, 10)
+                                // <p>paid</p>
                             ) : (
                                 <i className='fas fa-times' style={{ color: 'red' }}></i>
                             )}
