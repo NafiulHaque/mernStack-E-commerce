@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import Message from "../Components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import { listUsers, deleteUser } from "../actions/userAction";
+import Loader from "../Components/Loader";
 
 const UserListScreen = () => {
   const navigate = useNavigate();
@@ -31,10 +32,10 @@ const UserListScreen = () => {
   };
 
   return (
-    <div>
+    <div className="w-full h-full">
       <h1>Users</h1>
       {loading ? (
-        <h2>Loading...</h2>
+        <Loader/>
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (

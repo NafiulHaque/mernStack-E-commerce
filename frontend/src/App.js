@@ -20,6 +20,10 @@ import OrderListScreen from "./Screens/OrderListScreen";
 import DashboardScreen from "./Screens/DashboardScreen";
 import Dashboard from "./Components/Dashboard";
 import ProductCreateScreen from "./Screens/ProductCreateScreen";
+import UserDashboardScreen from "./Screens/UserDashboardScreen";
+import ProfileEditScreen from "./Screens/ProfileEditScreen";
+import UserOrderListScreen from "./Screens/UserOrderListScreen";
+import WishListScreen from "./Screens/WishListScreen";
 
 function App() {
   return (
@@ -28,8 +32,8 @@ function App() {
       <main className="my-2">
         <Routes>
           <Route path="/dashboard/" Component={DashboardScreen}>
-            <Route index element={<Dashboard/>}/>
-            <Route path="productlist" element={<ProductListScreen />}/>
+            <Route index element={<Dashboard />} />
+            <Route path="productlist" element={<ProductListScreen />} />
             <Route path="userlist" Component={UserListScreen} />
             <Route path="user/:id/edit" element={<UserEditScreen />} />
 
@@ -44,7 +48,12 @@ function App() {
 
             <Route path="/signup" element={<RegisterScreen />} />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/profile" element={<ProfileScreen />} />
+            <Route path="user/dashboard/" element={<UserDashboardScreen />}>
+              <Route index element={<ProfileScreen />} />
+              <Route path="editprofile" element={<ProfileEditScreen />} />
+              <Route path="userorder" element={<UserOrderListScreen />} />
+              <Route path="wishlist" element={<WishListScreen />} />
+            </Route>
 
             <Route path="/shipping" element={<ShipingScreen />} />
             <Route path="/payment" element={<PaymentScreen />} />

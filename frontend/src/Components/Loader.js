@@ -4,7 +4,9 @@ import React from 'react'
 
 const Loader = () => {
   return (
-    <Spinner className="h-16 w-16 text-gray-900/50" />
+   <div className='flex w-full h-full justify-center items-center'>
+     <Spinner className="h-16 w-16 text-gray-900/50" />
+   </div>
     
   )
 }

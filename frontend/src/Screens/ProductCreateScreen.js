@@ -1,9 +1,9 @@
-import { Card, Input, Typography } from "@material-tailwind/react";
+
 import React, { useEffect, useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { PRODUCT_CREATE_RESET, PRODUCT_CREATE_SUCCESS } from "../Constants/ProductConstant";
+import { PRODUCT_CREATE_RESET } from "../Constants/ProductConstant";
 import { productCreateAction } from "../actions/productAction";
 import Loader from "../Components/Loader";
 import Message from "../Components/Message";
@@ -18,7 +18,7 @@ const ProductCreateScreen = () => {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
-  const [uploading, setUploading] = useState(false);
+  // const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
 

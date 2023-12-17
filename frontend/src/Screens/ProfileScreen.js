@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import { Col, Row, Image, ListGroup, Card, Button,Table } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
+
 import Message from "../Components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader";
@@ -11,13 +10,10 @@ import {
 } from "../actions/userAction";
 import { USER_PROFILE_RESET } from "../Constants/UserConstant";
 import { orderListMy } from "../actions/OrderAction";
+import { Card, Button, CardBody, CardFooter } from "@material-tailwind/react";
 
 const ProfileScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,160 +23,79 @@ const ProfileScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const userProfileUpdate = useSelector((state) => state.userUpdateProfile);
-  const { success } = userProfileUpdate;
-
-  const orderList = useSelector((state) => state.orderListMy);
-  const { loading: loadingOrders, error: errorOrders, orders } = orderList;
+// console.log("user--------",user)
 
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     } else {
-      if (user && !user.name || success) {
-        dispatch({
-          type:USER_PROFILE_RESET
-         })
-        dispatch(userDetailsAction("profile"));
-        dispatch(orderListMy());
-        
-      } else {
-        setName(user ? user.name : "");
-        setEmail(user ? user.email : "");
-      }
+      dispatch(userDetailsAction("profile"));
     }
-  }, [userInfo, user]);
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (email != "" && password != "" && name != "" && confirmPassword != "") {
-      if (password != confirmPassword) {
-        setMessage("password do not match");
-      } else {
-        dispatch(
-          userProfileUpdateAction({ id: user._id, name, email, password })
-        );
-      }
-    }
-  };
+  }, [userInfo,navigate,dispatch]);
 
   return (
-    <Row>
-      <Col md={3}>
-        <h1>User Profile</h1>
-        {message && <Message variant={"danger"}>{message}</Message>}
-        {error && <Message variant={"danger"}>{error}</Message>}
-        {success && <Message variant={"success"}>Profile Updated</Message>}
-
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group>
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter Confirm password"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-              }}
-            ></Form.Control>
-          </Form.Group>
-
-          <Button type="submit" variant="primary">
-            Update
-          </Button>
-        </Form>
-      </Col>
-      <Col md={9}>
-        <h2>My Orders</h2>
-        {loadingOrders ? (
+    <Card>
+      <CardBody>
+       
+        {loading ? (
           <Loader />
-        ) : errorOrders ? (
-          <Message variant="danger">{errorOrders}</Message>
+        ) : error ? (
+          <Message variant={"danger"}>{error}</Message>
         ) : (
-          <Table striped bordered hover responsive className="table-sm">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>
-                    {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
-                    ) : (
-                      <i className="fas fa-times" style={{ color: "red" }}></i>
-                    )}
-                  </td>
-                  <td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
-                    ) : (
-                      <i className="fas fa-times" style={{ color: "red" }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <Link to={`/orders/${order._id}`}>
-                      <Button className="btn-sm" variant="light">
-                        Details
-                      </Button>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <div className="bg-white overflow-hidden shadow rounded-lg border">
+            <div className="px-4 py-5 sm:px-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Profile
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                This is some information about the user.
+              </p>
+            </div>
+            <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+              <dl className="sm:divide-y sm:divide-gray-200">
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Full name
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {user.name}
+                  </dd>
+                </div>
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Email address
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {user.email}
+                  </dd>
+                </div>
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Phone number
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    +88
+                  </dd>
+                </div>
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Address</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    123 Main St
+                    <br />
+                    Anytown, USA 12345
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         )}
-
-
-      </Col>
-    </Row>
+      </CardBody>
+      <CardFooter>
+        <Button onClick={() => navigate("/user/dashboard/editprofile")}>
+          Edit Profile
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

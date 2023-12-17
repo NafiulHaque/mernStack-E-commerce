@@ -116,11 +116,14 @@ const Header = () => {
                 </MenuHandler>
                 <MenuList className="p-1">
                   <h5 className="mx-2 mt-2">{userInfo.name}</h5>
-                  <Link to="/profile" className="font-sm no-underline">
+                  <Link to="/user/dashboard" className="font-sm no-underline">
                     <MenuItem>Profile</MenuItem>
                   </Link>
-                  <Link to="/profile" className="font-sm no-underline">
-                    <MenuItem>Edit Profile</MenuItem>
+                  <Link to="/user/dashboard/userorder" className="font-sm no-underline">
+                    <MenuItem>My Orders</MenuItem>
+                  </Link>
+                  <Link to="/user/dashboard/wishlist" className="font-sm no-underline">
+                    <MenuItem>Wish List</MenuItem>
                   </Link>
 
                   <MenuItem onClick={logoutHandler}>Logout</MenuItem>
