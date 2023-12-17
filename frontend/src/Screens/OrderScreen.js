@@ -1,6 +1,5 @@
-import { React, useEffect , useState } from "react";
+import { React, useEffect, useId, useState } from "react";
 import {
-  Button,
   Card,
   Col,
   Image,
@@ -8,14 +7,23 @@ import {
   ListGroupItem,
   Row,
 } from "react-bootstrap";
-import {PayPalButton} from 'react-paypal-button-v2'
+import { PayPalButton } from "react-paypal-button-v2";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../Components/Message";
-import { getOrderDetails ,payOrder,deliverOrder} from "../actions/OrderAction.js";
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from "../actions/OrderAction.js";
 import axios from "axios";
 import Loader from "../Components/Loader";
-import { ORDER_PAY_RESET,ORDER_DELIVER_RESET } from "../Constants/OrderConstant";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from "../Constants/OrderConstant";
+import { Button } from "@material-tailwind/react";
+import { now } from "mongoose";
 
 const OrderScreen = () => {
   const [sdkReady, setSdkReady] = useState(false);
@@ -25,7 +33,6 @@ const OrderScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
 
@@ -34,9 +41,6 @@ const OrderScreen = () => {
 
   const orderDeliver = useSelector((state) => state.orderDeliver);
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
-
-
-
 
   if (!loading) {
     // Calculate prices
@@ -50,49 +54,52 @@ const OrderScreen = () => {
   }
 
   useEffect(() => {
-
-     const addPayPalScript = async () => {
+    const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
       script.async = true;
       script.onload = () => {
-
         setSdkReady(true);
       };
       document.body.appendChild(script);
     };
 
-
-    if (successPay || !order || order._id !== id||successDeliver)
-        {
+    if (successPay || !order || order._id !== id || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
       if (!window.paypal) {
         addPayPalScript();
-
       } else {
         setSdkReady(true);
       }
     }
-
-    
-
-        
-  }, [dispatch, id,successPay, order,successDeliver,successPay]);
+  }, [dispatch, id, order, successDeliver, successPay]);
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
+    console.log("-----------", paymentResult);
     dispatch(payOrder(id, paymentResult));
   };
+
+  const successPymentManualy = () => {
+    let paymentResult = {};
+    // let paymentResult = {
+    //   id: userInfo._id,
+    //   status: "paid",
+    //   update_time: Date.now(),
+    //   email_address: userInfo.email,
+    // };
+    dispatch(payOrder(order._id, paymentResult));
+  };
+
+  // console.log(".......", paymentResult);
 
   const deliverHandler = () => {
     dispatch(deliverOrder(order));
   };
-
 
   return loading ? (
     <h2>Loading...</h2>
@@ -207,30 +214,44 @@ const OrderScreen = () => {
               <ListGroupItem>
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroupItem>
-              {!order.isPaid && (
-              <ListGroupItem>
-                {loadingPay && <Loader />}
-                {!sdkReady ? (
-                  <Loader />
-                ) : (
-                  <PayPalButton
-                    amount={order.totalPrice}
-                    onSuccess={successPaymentHandler}
-                  />
+              {order.paymentMethod !== "Cash On Delivery" && !order.isPaid && (
+                <ListGroupItem>
+                  {loadingPay && <Loader />}
+                  {!sdkReady ? (
+                    <Loader />
+                  ) : (
+                    <PayPalButton
+                      amount={order.totalPrice}
+                      onSuccess={successPaymentHandler}
+                    />
+                  )}
+                </ListGroupItem>
+              )}
+
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.paymentMethod === "Cash On Delivery" &&
+                !order.isDelivered && (
+                  <Button
+                    size="lg"
+                    disabled={order.isPaid}
+                    onClick={successPymentManualy}
+                  >
+                    Set payment ok
+                  </Button>
                 )}
-              </ListGroupItem>
-            )}
 
-            {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-              
-              <ListGroupItem> 
-                {loadingDeliver && <Loader />}
-                <Button type="button" className="btn btn-block" onClick={deliverHandler}>
-                  Mark As Delivered
-                </Button>
-              </ListGroupItem>
-            )}
-
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <div className="w-full mt-4 text-center">
+                    {loadingDeliver && <Loader />}
+                    <Button size="lg" className=" " onClick={deliverHandler}>
+                      Mark As Delivered
+                    </Button>
+                  </div>
+                )}
             </ListGroup>
           </Card>
         </Col>
