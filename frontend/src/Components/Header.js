@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Nav, NavDropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userLogout } from "../actions/userAction";
 import SearchBox from "./SearchBox";
 import { FaChevronDown, FaUser } from "react-icons/fa";
@@ -31,6 +31,7 @@ const Header = () => {
   const toggleClass = open ? "" : "hidden";
 
   const dispatch = useDispatch();
+  const navigate =useNavigate();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -51,6 +52,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(userLogout());
+    navigate("/login")
   };
   return (
     <header>

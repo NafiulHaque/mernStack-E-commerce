@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import Message from "../Components/Message";
 import Loader from "../Components/Loader";
-import { Button } from "@material-tailwind/react";
+import { Button, Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { USER_PROFILE_RESET } from "../Constants/UserConstant";
@@ -47,13 +47,17 @@ const ProfileEditScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (email !== "" && password !== "" && name !== "" && confirmPassword !== "") {
+    if (
+      email !== "" &&
+      password !== "" &&
+      name !== "" &&
+      confirmPassword !== ""
+    ) {
       if (password !== confirmPassword) {
         setMessage("password do not match");
       } else {
         dispatch(
           userProfileUpdateAction({ id: user._id, name, email, password })
-        
         );
         navigate("/user/dashboard");
       }
@@ -61,9 +65,10 @@ const ProfileEditScreen = () => {
   };
 
   return (
-    <Row>
-      <Col md={3}>
-        <h1>User Profile</h1>
+    <Card className="mt-4">
+        
+        <h3 className="mt-3 mx-3">Edit User Profile</h3>
+      <CardBody>
         {message && <Message variant={"danger"}>{message}</Message>}
         {error && <Message variant={"danger"}>{error}</Message>}
         {success && <Message variant={"success"}>Profile Updated</Message>}
@@ -118,12 +123,12 @@ const ProfileEditScreen = () => {
             ></Form.Control>
           </Form.Group>
 
-          <Button type="submit" variant="primary">
+          <Button size="md" type="submit" variant="primary" className="mt-3">
             Update
           </Button>
         </Form>
-      </Col>
-    </Row>
+      </CardBody>
+    </Card>
   );
 };
 

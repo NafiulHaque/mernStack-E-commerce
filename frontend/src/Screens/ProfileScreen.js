@@ -1,5 +1,5 @@
-import { React, useEffect, useState } from "react";
-import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { React, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Message from "../Components/Message";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,12 +8,10 @@ import {
   userDetailsAction,
   userProfileUpdateAction,
 } from "../actions/userAction";
-import { USER_PROFILE_RESET } from "../Constants/UserConstant";
-import { orderListMy } from "../actions/OrderAction";
+
 import { Card, Button, CardBody, CardFooter } from "@material-tailwind/react";
 
 const ProfileScreen = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,7 +21,7 @@ const ProfileScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-// console.log("user--------",user)
+  // console.log("user--------",user)
 
   useEffect(() => {
     if (!userInfo) {
@@ -31,29 +29,26 @@ const ProfileScreen = () => {
     } else {
       dispatch(userDetailsAction("profile"));
     }
-  }, [userInfo,navigate,dispatch]);
+  }, [userInfo, navigate, dispatch]);
 
   return (
     <Card>
       <CardBody>
-       
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant={"danger"}>{error}</Message>
         ) : (
           <div className="bg-white overflow-hidden shadow rounded-lg border">
-            <div className="px-4 py-5 sm:px-6">
+            <div className="px-4 py-2 sm:px-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900">
                 Profile
               </h3>
-              <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                This is some information about the user.
-              </p>
+              
             </div>
-            <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+            <div className="border-t border-gray-200 px-4 sm:p-0">
               <dl className="sm:divide-y sm:divide-gray-200">
-                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div className="py-3 sm:py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                   <dt className="text-sm font-medium text-gray-500">
                     Full name
                   </dt>
