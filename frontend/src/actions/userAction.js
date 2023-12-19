@@ -123,6 +123,8 @@ export const userDetailsAction = (id) => async (dispatch, getState) => {
     const {
       userLogin: { userInfo },
     } = getState();
+
+ 
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -130,10 +132,11 @@ export const userDetailsAction = (id) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.get(`/api/users/${id}`, config);
-
+    // console.log("useraction UserInfo.....",data);
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data,
+      
     });
   } catch (error) {
     dispatch({

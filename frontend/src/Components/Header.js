@@ -48,7 +48,7 @@ const Header = () => {
       sum += v;
     })
 
-  console.log("sum",sum)
+  // console.log("sum",sum)
 
   const logoutHandler = () => {
     dispatch(userLogout());

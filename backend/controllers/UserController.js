@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Users from "../Models/UserModel.js";
 import generateToken from "../utils/generateTokens.js";
+import cloudinary from "cloudinary";
 
 // @des get user profile
 // @route GET /api/users/profile
@@ -13,6 +14,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      image:user.image,
+      address:user.address,
+      phoneNumber:user.phoneNumber,
+      city:user.city,
+      divition:user.divition,
       isAdmin: user.isAdmin,
     });
   } else {
@@ -78,11 +84,22 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access private
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, image, address, phoneNumber, city, divition } =
+    req.body;
   const userExist = await Users.findOne({ email });
+
+  const myCloud = await cloudinary.v2.uploader.upload(image, {
+    folder: "avatars",
+  });
+
   if (userExist) {
     userExist.name = req.body.name || userExist.name;
     userExist.email = req.body.email || userExist.email;
+    userExist.image = myCloud.url;
+    userExist.address = address;
+    userExist.phoneNumber = phoneNumber;
+    userExist.city = city;
+    userExist.divition = divition;
     if (req.body.password) {
       userExist.password = req.body.password;
     }
@@ -92,6 +109,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      image: updateUser.image,
+      address: updateUser.address,
+      phoneNumber: updateUser.phoneNumber,
+      city: updateUser.city,
+      divition: updateUser.divition,
       isAdmin: updatedUser.isAdmin,
       token: generateToken(updatedUser._id),
     });
@@ -123,8 +145,20 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 const getUserById = asyncHandler(async (req, res) => {
   const user = await Users.findById(req.params.id).select("-password");
+  // console.log("userbyid.....", user);
+
   if (user) {
-    res.json(user);
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      image: user.image,
+      address: user.address,
+      phoneNumber: user.phoneNumber,
+      city: user.city,
+      divition: user.divition,
+      isAdmin: user.isAdmin,
+    });
   } else {
     res.status(404);
     throw new Error("User not found");

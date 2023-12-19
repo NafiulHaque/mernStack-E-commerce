@@ -43,7 +43,7 @@ if(orderItems && orderItems.length === 0){
     const id=req.params.id
     const order =await Order.findById(id).populate('user','name email')
     
-     console.log(order)
+    //  console.log(order)
       if(order){
         res.send(order)
       }

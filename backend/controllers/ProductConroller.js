@@ -51,17 +51,21 @@ const deleteProduct = asyncHandler(async (req, res) => {
 //@access private/admin
 const createProduct = asyncHandler(async (req, res) => {
   const { name, price, image, brand, category, countInStock, description } =
-  req.body;
-  const product =new Product({
-    user:req.user._id,
+    req.body;
+
+  const myCloud = await cloudinary.v2.uploader.upload(image, {
+    folder: "products",
+  });
+  const product = new Product({
+    user: req.user._id,
     name,
     price,
-    image,
+    image: myCloud.url,
     brand,
     category,
     countInStock,
     description,
-  })
+  });
   // const product = new Product({
   //   name: "sample name",
   //   price: 0,
@@ -146,7 +150,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 
 const getTopProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({}).sort({ rating: -1 }).limit(2);
-  console.log("products=", products);
+  // console.log("products=", products);
 
   res.status(200).json(products);
 });

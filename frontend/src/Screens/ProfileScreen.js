@@ -1,5 +1,5 @@
 import { React, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Message from "../Components/Message";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +9,16 @@ import {
   userProfileUpdateAction,
 } from "../actions/userAction";
 
-import { Card, Button, CardBody, CardFooter } from "@material-tailwind/react";
+import {
+  Card,
+  Button,
+  CardBody,
+  CardFooter,
+  Avatar,
+} from "@material-tailwind/react";
 
 const ProfileScreen = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,15 +28,15 @@ const ProfileScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  // console.log("user--------",user)
+  // console.log("user--------", userInfo.id);
 
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     } else {
-      dispatch(userDetailsAction("profile"));
+      dispatch(userDetailsAction(userInfo.id));
     }
-  }, [userInfo, navigate, dispatch]);
+  }, [userInfo, navigate, dispatch, id]);
 
   return (
     <Card>
@@ -40,14 +47,22 @@ const ProfileScreen = () => {
           <Message variant={"danger"}>{error}</Message>
         ) : (
           <div className="bg-white overflow-hidden shadow rounded-lg border">
-            <div className="px-4 py-2 sm:px-6">
+            <div className="px-4 py-2 sm:px-6 flex justify-between">
               <h3 className="text-lg leading-6 font-medium text-gray-900">
                 Profile
               </h3>
-              
+              <Avatar
+                src={user.image}
+                alt="avatar"
+                size="xxl"
+                variant="square"
+                withBorder={true}
+                color="blue-gray"
+                className="p-0.5"
+              />
             </div>
             <div className="border-t border-gray-200 px-4 sm:p-0">
-              <dl className="sm:divide-y sm:divide-gray-200">
+              <dl className="sm:divide-y sm:divide-gray-200  grid grid-cols-2 gap-6 sm:grid-cols-2">
                 <div className="py-3 sm:py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                   <dt className="text-sm font-medium text-gray-500">
                     Full name
@@ -69,15 +84,30 @@ const ProfileScreen = () => {
                     Phone number
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    +88
+                    +880{user.phoneNumber}
                   </dd>
                 </div>
                 <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    City
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {user.city}
+                  </dd>
+                </div>
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Divition
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {user.divition}
+                  </dd>
+                </div>
+                
+                <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                   <dt className="text-sm font-medium text-gray-500">Address</dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    123 Main St
-                    <br />
-                    Anytown, USA 12345
+                   {user.address}
                   </dd>
                 </div>
               </dl>

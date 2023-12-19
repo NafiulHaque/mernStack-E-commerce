@@ -15,6 +15,21 @@ const userSchema=mongoose.Schema(
         type:String,
         required:true,
     },
+    image:{
+        type:String,
+    },
+    address:{
+        type:String,
+    },
+    phoneNumber:{
+        type:Number,
+    },
+    city:{
+        type:String,
+    },
+    divition:{
+        type:String,
+    },
     isAdmin:{
         type:Boolean,
         required:true,
